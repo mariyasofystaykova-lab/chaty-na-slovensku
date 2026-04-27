@@ -698,19 +698,55 @@
     box-shadow: 0 10px 32px rgba(0,0,0,0.45);
   }
 
-  /* PRINT */
+  /* ===== CHAPTER SEPARATOR (replaces page-break in print) ===== */
+  .chapter-sep {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 70px 0;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .chapter-sep::before,
+  .chapter-sep::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-pale), transparent);
+  }
+  .chapter-sep-icon { font-size: 22pt; }
+
+  /* PRINT — single continuous page */
   @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { margin: 0; }
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      background: var(--cream);
+    }
     .pdf-btn { display: none !important; }
-    .cover { min-height: 100vh; page-break-after: always; }
-    .toc-page { min-height: 100vh; page-break-after: always; }
-    .closing-page { min-height: 100vh; }
-    .chata-card { page-break-inside: avoid; break-inside: avoid; }
-    .info-box { page-break-inside: avoid; break-inside: avoid; }
-    .practical-section { page-break-inside: avoid; break-inside: avoid; }
-    .data-table { page-break-inside: avoid; break-inside: avoid; }
+    /* Kill all forced page breaks */
+    .page-break { display: none !important; }
+    * {
+      page-break-before: auto !important;
+      page-break-after: auto !important;
+      break-before: auto !important;
+      break-after: auto !important;
+    }
+    /* Prevent internal breaks inside cards */
+    .chata-card,
+    .info-box,
+    .practical-section,
+    .data-table,
+    .pull-quote,
+    .region-map,
+    .two-col { page-break-inside: avoid; break-inside: avoid; }
+    /* Cover / closing: natural height, no vh */
+    .cover, .closing-page { min-height: unset; }
+    .toc-page { min-height: unset; }
+    /* Add bottom padding after banners for visual breathing room */
     .banner-green, .banner-blue, .banner-brown, .banner-gold, .banner-purple {
-      page-break-after: avoid; break-after: avoid;
+      margin-top: 32px;
     }
   }
 </style>
@@ -811,7 +847,7 @@
   <div class="cover-footer">Hodnota 11,99 € · Teraz zdarma · 100% zadarmo</div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--                TABLE OF CONTENTS                    -->
@@ -895,7 +931,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--                CHAPTER 1: ÚVOD                      -->
@@ -1009,7 +1045,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--              CHAPTER 2: HORY                        -->
@@ -1191,7 +1227,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--              CHAPTER 3: JAZERÁ                      -->
@@ -1342,7 +1378,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--               CHAPTER 4: LESY                       -->
@@ -1462,7 +1498,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--             CHAPTER 5: VÝHĽADY                      -->
@@ -1580,7 +1616,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--           CHAPTER 6: PRAKTICKÉ INFORMÁCIE           -->
@@ -1750,7 +1786,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+<div class="chapter-sep"><span class="chapter-sep-icon">❧</span></div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!--                   CLOSING PAGE                      -->
@@ -1779,9 +1815,26 @@
 </div>
 
 
-<button class="pdf-btn" onclick="window.print()">
+<button class="pdf-btn" onclick="printSinglePage()">
   ⬇ Stiahnuť PDF
 </button>
+
+<script>
+function printSinglePage() {
+  // Measure total document height and convert px → mm (96dpi: 1px = 0.2646mm)
+  const totalH = Math.ceil(document.documentElement.scrollHeight * 0.2646) + 30;
+  const style = document.createElement('style');
+  style.id = '__print_size__';
+  // Single tall page — full width A4, auto height
+  style.textContent = '@page { size: 210mm ' + totalH + 'mm; margin: 15mm 18mm 15mm 18mm; }';
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(function() {
+    const el = document.getElementById('__print_size__');
+    if (el) el.remove();
+  }, 2000);
+}
+</script>
 
 </body>
 </html>
