@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaty na Slovensku</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Open+Sans:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #b7e4c7;
+    --brown-dark: #4a2c11;
+    --brown-mid: #8b5e3c;
+    --brown-light: #c8956c;
+    --cream: #fdf8f0;
+    --gold: #d4a017;
+    --gold-light: #f0c040;
+    --sky: #1a6896;
+    --sky-light: #4ea8de;
+    --text-dark: #1c1c1c;
+    --text-mid: #3d3d3d;
+  }
+
+  body {
+    font-family: 'Open Sans', Georgia, serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    font-size: 11pt;
+    line-height: 1.75;
+  }
+
+  /* ===== PAGE BREAKS ===== */
+  .page-break { page-break-after: always; break-after: page; }
+  .page-break-before { page-break-before: always; break-before: page; }
+
+  /* ===== COVER PAGE ===== */
+  .cover {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0d2b1a 0%, #1a3a2a 40%, #2d6a4f 75%, #52b788 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(82,183,136,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(212,160,23,0.15) 0%, transparent 40%);
+  }
+
+  .cover-badge {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--brown-dark);
+    font-weight: 700;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 24px;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(212,160,23,0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-mountain-scene {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .mountain-svg {
+    width: 380px;
+    max-width: 90vw;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 72pt;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 1;
+    letter-spacing: -1px;
+  }
+
+  .cover-subtitle-line {
+    display: block;
+    font-size: 28pt;
+    font-weight: 400;
+    color: var(--green-pale);
+    letter-spacing: 8px;
+    margin-top: 10px;
+  }
+
+  .cover-tagline {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14pt;
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    margin-top: 24px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+  }
+
+  .cover-divider {
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 24px auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-categories {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cover-cat {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 9.5pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
+  }
+
+  .cover-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 8pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  /* ===== INNER PAGES ===== */
+  .inner-page {
+    padding: 50px 70px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ===== TABLE OF CONTENTS ===== */
+  .toc-page {
+    min-height: 100vh;
+    padding: 60px 70px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .toc-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .toc-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28pt;
+    color: var(--green-dark);
+    margin-bottom: 10px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed rgba(0,0,0,0.12);
+  }
+
+  .toc-item:last-child { border-bottom: none; }
+
+  .toc-icon { font-size: 18pt; margin-right: 14px; flex-shrink: 0; }
+
+  .toc-text { flex: 1; }
+
+  .toc-chapter {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .toc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15pt;
+    color: var(--text-dark);
+    font-weight: 700;
+  }
+
+  .toc-desc {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  /* ===== CHAPTER HEADERS ===== */
+  .chapter-header {
+    padding: 60px 70px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .chapter-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38pt;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .chapter-intro {
+    font-size: 12.5pt;
+    color: var(--text-mid);
+    line-height: 1.8;
+    font-style: italic;
+    border-left: 4px solid var(--green-light);
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .chapter-divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--green-mid), var(--green-pale), transparent);
+    margin: 30px 0;
+    border-radius: 3px;
+  }
+
+  /* ===== GRADIENT CHAPTER BANNERS ===== */
+  .banner-green {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    color: white;
+    padding: 50px 70px;
+    margin-bottom: 0;
+  }
+
+  .banner-blue {
+    background: linear-gradient(135deg, #0d2b4a 0%, var(--sky) 60%, var(--sky-light) 100%);
+    color: white;
+    padding: 50px 70px;
+  }
+
+  .banner-brown {
+    background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown-mid) 60%, var(--brown-light) 100%);
+    color: white;
+    padding: 50px 70px;
+  }
+
+  .banner-gold {
+    background: linear-gradient(135deg, #3d2000 0%, #8b5e00 60%, var(--gold) 100%);
+    color: white;
+    padding: 50px 70px;
+  }
+
+  .banner-purple {
+    background: linear-gradient(135deg, #1a0d2e 0%, #4a1a7a 60%, #8b52c8 100%);
+    color: white;
+    padding: 50px 70px;
+  }
+
+  .banner .chapter-label { color: rgba(255,255,255,0.7); }
+  .banner .chapter-title { color: white; }
+  .banner .chapter-intro { color: rgba(255,255,255,0.9); border-left-color: rgba(255,255,255,0.5); }
+
+  /* ===== CHATA CARDS ===== */
+  .chata-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+    margin-bottom: 32px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .chata-header {
+    padding: 22px 28px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .chata-icon {
+    font-size: 36pt;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .chata-header-text { flex: 1; }
+
+  .chata-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18pt;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .chata-location {
+    font-size: 9pt;
+    color: #666;
+    letter-spacing: 0.5px;
+  }
+
+  .chata-location::before { content: '📍 '; }
+
+  .stars { color: var(--gold); font-size: 13pt; margin-top: 4px; }
+
+  .chata-body { padding: 20px 28px; }
+
+  .chata-desc {
+    font-size: 10.5pt;
+    line-height: 1.8;
+    color: var(--text-mid);
+    margin-bottom: 16px;
+  }
+
+  .chata-stats {
+    display: flex;
+    gap: 0;
+    margin-top: 16px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px 10px;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    background: #fafafa;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-label {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--green-dark);
+  }
+
+  /* ===== INFO BOXES ===== */
+  .info-box {
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .info-box-green { background: #e8f5ee; border-left: 4px solid var(--green-mid); }
+  .info-box-blue { background: #e3f2fd; border-left: 4px solid var(--sky); }
+  .info-box-gold { background: #fff8e1; border-left: 4px solid var(--gold); }
+  .info-box-brown { background: #f3e8df; border-left: 4px solid var(--brown-mid); }
+  .info-box-red { background: #fdecea; border-left: 4px solid #c62828; }
+
+  .info-box-icon { font-size: 22pt; flex-shrink: 0; line-height: 1.2; }
+
+  .info-box-content h4 {
+    font-weight: 700;
+    font-size: 10.5pt;
+    margin-bottom: 6px;
+    color: var(--text-dark);
+  }
+
+  .info-box-content p {
+    font-size: 10pt;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  /* ===== TABLES ===== */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 10pt;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .data-table thead tr {
+    background: var(--green-dark);
+    color: white;
+  }
+
+  .data-table th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 8.5pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .data-table tbody tr:nth-child(even) { background: #f7fbf8; }
+  .data-table tbody tr:nth-child(odd) { background: white; }
+
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    vertical-align: middle;
+  }
+
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== HIGHLIGHT QUOTE ===== */
+  .pull-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 18pt;
+    font-style: italic;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--green-dark);
+    padding: 40px 50px;
+    position: relative;
+    margin: 30px 0;
+  }
+
+  .pull-quote::before {
+    content: '\201E';
+    font-size: 80pt;
+    color: var(--green-pale);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .checklist li {
+    padding: 8px 0 8px 36px;
+    position: relative;
+    font-size: 10.5pt;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.6;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 24px;
+    height: 24px;
+    background: var(--green-mid);
+    color: white;
+    border-radius: 50%;
+    font-size: 10pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  /* ===== REGION MAP (CSS) ===== */
+  .region-map {
+    background: linear-gradient(135deg, #e8f4ea, #d4edd8);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .region-map h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14pt;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .regions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .region-item {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-top: 3px solid var(--green-mid);
+  }
+
+  .region-item .ri-icon { font-size: 22pt; display: block; margin-bottom: 6px; }
+  .region-item .ri-name { font-weight: 700; font-size: 10pt; color: var(--green-dark); }
+  .region-item .ri-sub { font-size: 8.5pt; color: #666; margin-top: 2px; }
+
+  /* ===== TWO-COLUMN TEXT ===== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 24px 0;
+  }
+
+  /* ===== SEASON BADGE ===== */
+  .season-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-spring { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+  .badge-summer { background: #fff8e1; color: #f57f17; border: 1px solid #ffe082; }
+  .badge-autumn { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+  .badge-winter { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+  /* ===== PRACTICAL PAGE ===== */
+  .practical-section {
+    background: white;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  .practical-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15pt;
+    color: var(--green-dark);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--green-pale);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ===== CLOSING PAGE ===== */
+  .closing-page {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0d1f15 0%, #1a3a2a 50%, #2d6a4f 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 70px;
+    color: white;
+  }
+
+  .closing-icon { font-size: 60pt; margin-bottom: 30px; }
+
+  .closing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30pt;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  .closing-text {
+    font-size: 13pt;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.85);
+    max-width: 540px;
+    margin-bottom: 40px;
+  }
+
+  .closing-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 16pt;
+    font-style: italic;
+    color: var(--green-pale);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 24px 32px;
+    border-radius: 12px;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  /* ===== BODY TEXT ===== */
+  .body-text {
+    font-size: 10.5pt;
+    line-height: 1.85;
+    color: var(--text-mid);
+    margin-bottom: 16px;
+  }
+
+  h3.section-h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15pt;
+    color: var(--green-dark);
+    margin: 30px 0 12px;
+  }
+
+  .page-content {
+    padding: 40px 70px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ===== DOWNLOAD BUTTON ===== */
+  .pdf-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.3px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+  }
+  .pdf-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(0,0,0,0.45);
+  }
+
+  /* PRINT */
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pdf-btn { display: none !important; }
+    .cover { min-height: 100vh; page-break-after: always; }
+    .toc-page { min-height: 100vh; page-break-after: always; }
+    .closing-page { min-height: 100vh; }
+    .chata-card { page-break-inside: avoid; break-inside: avoid; }
+    .info-box { page-break-inside: avoid; break-inside: avoid; }
+    .practical-section { page-break-inside: avoid; break-inside: avoid; }
+    .data-table { page-break-inside: avoid; break-inside: avoid; }
+    .banner-green, .banner-blue, .banner-brown, .banner-gold, .banner-purple {
+      page-break-after: avoid; break-after: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    COVER PAGE                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">🎁 Bonus 1 — PDF Sprievodca</div>
+
+  <div class="cover-mountain-scene">
+    <svg class="mountain-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky gradient -->
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a6896" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#52b788" stop-opacity="0.4"/>
+        </linearGradient>
+        <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="white"/>
+          <stop offset="40%" stop-color="#e8f4f8"/>
+          <stop offset="100%" stop-color="#52b788"/>
+        </linearGradient>
+        <linearGradient id="mountain2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3d8b70"/>
+          <stop offset="100%" stop-color="#1a3a2a"/>
+        </linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4ea8de" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#1a6896" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+      <!-- Background sky -->
+      <rect width="400" height="200" fill="url(#skyGrad)" rx="12"/>
+      <!-- Stars -->
+      <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="120" cy="12" r="1" fill="white" opacity="0.7"/>
+      <circle cx="200" cy="8" r="1.5" fill="white" opacity="0.6"/>
+      <circle cx="300" cy="15" r="1" fill="white" opacity="0.8"/>
+      <circle cx="360" cy="22" r="1.5" fill="white" opacity="0.7"/>
+      <!-- Back mountain left -->
+      <polygon points="0,130 80,40 160,130" fill="#1d4a35" opacity="0.7"/>
+      <!-- Back mountain right -->
+      <polygon points="240,130 330,35 400,110 400,130" fill="#1d4a35" opacity="0.6"/>
+      <!-- Main center mountain (snowy) -->
+      <polygon points="120,160 200,20 280,160" fill="url(#snow)"/>
+      <!-- Snow cap detail -->
+      <polygon points="180,55 200,20 220,55 210,60 200,45 190,60" fill="white" opacity="0.9"/>
+      <!-- Forest line left -->
+      <path d="M0,160 Q60,140 120,160" fill="#1a3a2a"/>
+      <path d="M280,160 Q340,140 400,160" fill="#1a3a2a"/>
+      <!-- Lake/water at bottom -->
+      <ellipse cx="200" cy="185" rx="140" ry="25" fill="url(#water)" opacity="0.8"/>
+      <!-- Lake reflection shimmer -->
+      <line x1="160" y1="183" x2="240" y2="183" stroke="white" stroke-width="1" opacity="0.5"/>
+      <line x1="175" y1="188" x2="225" y2="188" stroke="white" stroke-width="0.8" opacity="0.4"/>
+      <!-- Chata (cottage) -->
+      <rect x="88" y="142" width="28" height="18" fill="#8b5e3c" rx="2"/>
+      <polygon points="85,142 102,128 119,142" fill="#c8956c"/>
+      <rect x="95" y="150" width="8" height="10" fill="#4a2c11"/>
+      <rect x="91" y="145" width="5" height="5" fill="#d4e8f5"/>
+      <!-- Second chata right -->
+      <rect x="284" y="145" width="22" height="16" fill="#8b5e3c" rx="2"/>
+      <polygon points="281,145 295,133 309,145" fill="#c8956c"/>
+      <rect x="290" y="152" width="6" height="9" fill="#4a2c11"/>
+      <!-- Pine trees -->
+      <polygon points="40,160 47,140 54,160" fill="#1a5c3a"/>
+      <polygon points="42,155 47,135 52,155" fill="#2d7a50"/>
+      <polygon points="60,162 67,143 74,162" fill="#1a5c3a"/>
+      <polygon points="330,162 337,142 344,162" fill="#1a5c3a"/>
+      <polygon points="350,158 358,138 366,158" fill="#2d7a50"/>
+      <polygon points="370,163 376,146 382,163" fill="#1a5c3a"/>
+      <!-- Campfire glow -->
+      <circle cx="102" cy="162" r="3" fill="#ff8c00" opacity="0.8"/>
+      <circle cx="102" cy="162" r="5" fill="#ff4500" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <div class="cover-title">
+    CHATY
+    <span class="cover-subtitle-line">NA SLOVENSKU</span>
+  </div>
+
+  <div class="cover-divider"></div>
+
+  <p class="cover-tagline">Objav najkrajšie chaty a chalupy, skryté klenoty slovenských hôr, jazier a lesov</p>
+
+  <div class="cover-categories">
+    <span class="cover-cat">⛰️ Hory</span>
+    <span class="cover-cat">🏞️ Jazerá</span>
+    <span class="cover-cat">🌲 Lesy</span>
+    <span class="cover-cat">🌅 Výhľady</span>
+    <span class="cover-cat">🏡 Praktické tipy</span>
+  </div>
+
+  <div class="cover-footer">Hodnota 11,99 € · Teraz zdarma · 100% zadarmo</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                TABLE OF CONTENTS                    -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="toc-page">
+  <div class="toc-header">
+    <div class="chapter-label">Obsah</div>
+    <h2>Čo nájdeš v tejto knihe</h2>
+    <div class="chapter-divider"></div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">✍️</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 1</span>
+      <div class="toc-title">Úvod — Kultúra chát na Slovensku</div>
+      <div class="toc-desc">Prečo sú chaty srdcom slovenského cestovného ruchu a ako sa vybrať na dovolenku snov</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">⛰️</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 2</span>
+      <div class="toc-title">Hory — Horské chaty a útočiská</div>
+      <div class="toc-desc">Vysoké Tatry, Nízke Tatry, Malá Fatra — 6 nezabudnuteľných horských châp</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">🏞️</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 3</span>
+      <div class="toc-title">Jazerá — Chaty pri vodách</div>
+      <div class="toc-desc">Štrba, Hincovo, Popradské pleso — 5 chalúp pri najkrajších slovenských jazerách</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">🌲</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 4</span>
+      <div class="toc-title">Lesy — Lesné chaty a chalupy</div>
+      <div class="toc-desc">Slovenský raj, Muránska planina, Poloniny — lesné útočiská plné pokoja</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">🌅</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 5</span>
+      <div class="toc-title">Výhľady — Panoramatické chaty</div>
+      <div class="toc-desc">Chaty s výhľadom, ktorý si zapamätáš na celý život</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">📋</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Kapitola 6</span>
+      <div class="toc-title">Praktické informácie</div>
+      <div class="toc-desc">Ako rezervovať chatu, čo si zbaliť, pravidlá v horách a cenová orientácia</div>
+    </div>
+  </div>
+
+  <div class="toc-item">
+    <div class="toc-icon">🏔️</div>
+    <div class="toc-text">
+      <span class="toc-chapter">Záver</span>
+      <div class="toc-title">Slovensko čaká na teba</div>
+      <div class="toc-desc">Záverečné slová a inšpirácia pre tvoju prvú (alebo ďalšiu) chatu</div>
+    </div>
+  </div>
+
+  <div class="info-box info-box-green" style="margin-top:40px;">
+    <div class="info-box-icon">💡</div>
+    <div class="info-box-content">
+      <h4>Ako používať túto knihu</h4>
+      <p>Každá chata má kartičku s hodnotením, praktickými informáciami a tipmi. Na konci nájdeš kompletnú zbierku rád, ako si dovolenku plánovať od základov. Odporúčame začať od začiatku, ale pokojne si listuj podľa záujmu!</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                CHAPTER 1: ÚVOD                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-green banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 1</span>
+    <h1 class="chapter-title">Kultúra chát<br>na Slovensku</h1>
+    <p class="chapter-intro">Chata nie je len miesto na prespanie — je to stav duše, závan slobody a spojenie s prírodou, ktoré Slováci majú hlboko zakorenené v srdci.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="body-text">
+    Slovensko je krajina rozprávkovej prírody. Krajina, kde sa v rannom hmle topia vrcholy Tatier, kde v zelených dolinách šumia horské potoky a kde za každým kameňom číha príbeh starý stovky rokov. A práve v tejto krajine má chata — či chalupa — nezameniteľné miesto.
+  </p>
+
+  <p class="body-text">
+    Slovo „chata" pre Slováka znamená oveľa viac než len ubytovanie. Je to útočisko pred zhonu mesta, miesto, kde sa čas spomaľuje, kde sa dychčí čerstvým horským vzduchom a kde sa pri ohni zhromažďuje celá rodina. Výlety do hôr, grilovanie v záhrade, ranné prechádzky s hrnčekom horúcej kávy v ruke — to všetko je súčasťou neoddeliteľnej chatovej kultúry.
+  </p>
+
+  <div class="pull-quote">
+    V horách si nájde každý to, čo hľadá — dobrodružstvo, pokoj, alebo len seba samého.
+  </div>
+
+  <h3 class="section-h3">História chatovej kultúry</h3>
+  <p class="body-text">
+    Prvé horské chaty na území Slovenska vznikali koncom 19. storočia, keď sa záujem o turistiku v Karpatoch začal systematicky organizovať. Uhorský karpatský spolok (Ungarischer Karpatenverein), založený roku 1873, bol zodpovedný za výstavbu prvých horských útočísk vo Vysokých Tatrách. Chata Zamkovského (1943), Téryho chata (1899) alebo Rainerova chata patria k najstarším zachovaným horským objektom.
+  </p>
+  <p class="body-text">
+    V období socializmu sa chatovanie stalo masovým fenoménom. Desiatky tisíc Slovákov si v okolí miest a v horách postavili vlastné záhradné chaty, kde trávili víkendy i dovolenkové mesiace. Tento zvyk pretrvávajúci dodnes formuje celú generáciu ľudí, pre ktorých je „ísť na chatu" rovnako prirodzené ako dýchanie.
+  </p>
+
+  <div class="two-col">
+    <div class="info-box info-box-green" style="margin:0;">
+      <div class="info-box-icon">⛰️</div>
+      <div class="info-box-content">
+        <h4>Horské chaty (turistické)</h4>
+        <p>Prevádzkujú ich horské spolky a Slovenský raj. Ubytovanie v komunitnom prostredí, jednoduché, ale autentické.</p>
+      </div>
+    </div>
+    <div class="info-box info-box-brown" style="margin:0;">
+      <div class="info-box-icon">🏡</div>
+      <div class="info-box-content">
+        <h4>Súkromné chalupy</h4>
+        <p>Tradičné vidiecke stavby premenené na pohodlné ubytovanie — najčastejšie s vlastnou záhradou a krbom.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="section-h3">Prečo chata, nie hotel?</h3>
+  <p class="body-text">
+    Kým hotel ponúka anonymitu a servis, chata ponúka autenticitu a slobodu. Môžeš si uvariť, čo chceš, vstávať kedy chceš a zostať, dokedy chceš. Kontakt s prírodou je bezprostredný — okno otvoriš priamo do lesa, záhradu zdieľaš len s vtákmi a veveričkami.
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Kritérium</th>
+        <th>Chata / Chalupa</th>
+        <th>Hotel</th>
+        <th>Glamping</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Súkromie</strong></td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>⭐⭐⭐</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>Kontakt s prírodou</strong></td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>⭐⭐</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>Komfort</strong></td>
+        <td>⭐⭐⭐⭐</td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>Cena / noc</strong></td>
+        <td>od 60–200 €</td>
+        <td>od 80–300 €</td>
+        <td>od 80–180 €</td>
+      </tr>
+      <tr>
+        <td><strong>Záhrada / oheň</strong></td>
+        <td>✅ Áno</td>
+        <td>❌ Nie</td>
+        <td>✅ Áno</td>
+      </tr>
+      <tr>
+        <td><strong>Rodinná atmosféra</strong></td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>⭐⭐</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box info-box-gold">
+    <div class="info-box-icon">🌟</div>
+    <div class="info-box-content">
+      <h4>Vedel si, že...?</h4>
+      <p>Slovensko má viac ako 9 národných parkov a chránených krajinných oblastí, čo z neho robí jednu z najzelenějších krajín strednej Európy. Viac ako 50 % územia pokrývajú lesy — ideálne zázemie pre chatovú kultúru.</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--              CHAPTER 2: HORY                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-green banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 2</span>
+    <h1 class="chapter-title">⛰️ Hory<br>Horské chaty a útočiská</h1>
+    <p class="chapter-intro">Vysoké Tatry, Nízke Tatry, Malá Fatra — slovenské hory sú domovom chát, ktoré ti ukradnú srdce na prvý pohľad.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="body-text">
+    Horské chaty na Slovensku sú fenoménom samé o sebe. Zatiaľ čo niektoré sú nenápadné drevené útočiská schované v lesoch, iné stoja priamo pod skalnatými veľhorami, s výhľadmi, pre ktoré stojí za to zdolať akúkoľvek kopec. V tejto kapitole ti predstavíme šesť wyjimočných horských châp.
+  </p>
+
+  <!-- CHATA 1 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🏔️</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata pri Zelenom plese</div>
+        <div class="chata-location">Belianské Tatry, Vysoké Tatry · nadm. výška 1551 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Perla Belianskych Tatier ukrytá pri emeraldovo zelenom horskom jazere. Chata pri Zelenom plese patrí k najromantickejším horským ubytovaniam na Slovensku. Vstanete za svitu a hladina jazera odráža ružovkasté svetlo úsvitu — pohľad, ktorý si zapamätáte navždy. Chata ponúka jednoduché, ale útulné izby, tradičnú kuchyňu s výdatnou kapustnicou a atmosféru, akú nenájdete nikde inde.
+      </p>
+      <p class="chata-desc">
+        Prístup: Pešia turistika z Tatranských Zrubin (cca 3 hodiny), alebo z Ždiar cez sedlo Kopské (4 hodiny). Chata je ideálna ako základňa pre výstupy na Ľadový štít alebo Jahňací štít.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Nadm. výška</span><span class="stat-value">1 551 m</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">60 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Jún–Okt</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Stredná</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA 2 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">⛺</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Téryho chata</div>
+        <div class="chata-location">Malá Studená dolina, Vysoké Tatry · nadm. výška 2015 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Jedna z najvyššie položených horských châp na Slovensku a jedna z najstarších — postavená roku 1899. Téryho chata stojí v srdci Malej Studenej doliny, obklopená päťimi krásnymi plesami: Zbojnícke, Prostredné, Dlhé, Okrúhle a Modré pleso. Je to miesto, kde čas plynie inak a kde sa cítite naozaj ďaleko od civilizácie.
+      </p>
+      <p class="chata-desc">
+        Výstup z Hrebienka trvá zhruba 3–4 hodiny po červenej turistickej značke. Chata má celoročnú prevádzku vďaka zásobovaniu lanovou dráhou. Kuchyňa ponúka teplé jedlá celý deň, ubytovanie je v spoločných izbách s charakteristickými drevenými poschodovými posteľami.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Nadm. výška</span><span class="stat-value">2 015 m</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">80 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Celoročne</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Stredná+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA 3 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌲</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata na Grúni</div>
+        <div class="chata-location">Malá Fatra, Vrátna dolina · nadm. výška 1012 m</div>
+        <div class="stars">★★★★☆</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Malá Fatra je srdcom stredného Slovenska a Vrátna dolina je jej zlatou žilou. Chata na Grúni ponúka príjemné rodinné ubytovanie s výhľadom na impozantné skaly Rozsutca. Okolie je ideálne pre rodiny s deťmi — turistické chodníky sú dobre označené a náročnosť si môžete vybrať sami.
+      </p>
+      <p class="chata-desc">
+        V zime sa dolina premení na lyžiarske stredisko so zjazdovkami rôznych obtiažností. Chata Na Grúni je preto populárna celý rok — v lete pre turistiku, v zime pre lyžovanie.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima (lyžovanie)</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Nadm. výška</span><span class="stat-value">1 012 m</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">50 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Celoročne</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Ľahká</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA 4 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🦅</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Zamkovského chata</div>
+        <div class="chata-location">Malá Studená dolina, Tatry · nadm. výška 1475 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Zamkovského chata, vybudovaná v rokoch 1942–1943, je jednou z najobľúbenejších tatranských châp. Leží v dolnej časti Malej Studenej doliny a je ľahko dostupná z Hrebienka (cca 45 minút). Chata je nazvána po tatranskom horolezeckom priekopníkovi Teodorovi Zamkovskom.
+      </p>
+      <p class="chata-desc">
+        Ponúka vynikajúcu kapustnicu, tradičné slovenské jedlá a priateľský personál. Je ideálna ako prvá zastávka pri výstupe na Téryho chatu alebo ďalej do doliny. Pre mnohých je táto chata synonymom tatranského ducha — jednoduchého, úprimného a nezabudnuteľného.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Nadm. výška</span><span class="stat-value">1 475 m</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">100 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Celoročne</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Ľahká</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA 5 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🏕️</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata pod Rysmi</div>
+        <div class="chata-location">Pod Rysmi, Vysoké Tatry · nadm. výška 2250 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Najvyššie trvalo obývaná budova na Slovensku a jedna z najvyšších horských châp v celej strednej Európe. Chata pod Rysmi leží tesne pod sedlom Váha, na hranici so Poľskom, vo výške 2250 metrov nad morom. Výstup sem je náročný a vyžaduje dobrú fyzickú kondíciu, ale odmena je fenomenálna.
+      </p>
+      <p class="chata-desc">
+        Z vrcholu Rysov (2499 m n. m.) sa otvára panoráma, ktorú nemá v strednej Európe páru. Chata je otvorená len v letnej sezóne a kapacita je obmedzená, preto je rezervácia nevyhnutná. Nocovanie tu je skutočným dobrodružstvom — ste doslova nad oblakmi.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-summer">☀️ Leto</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Nadm. výška</span><span class="stat-value">2 250 m</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">25 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Júl–Sep</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Vysoká ⚠️</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box info-box-red">
+    <div class="info-box-icon">⚠️</div>
+    <div class="info-box-content">
+      <h4>Bezpečnosť v Tatrách</h4>
+      <p>Horské počasie sa mení veľmi rýchlo. Vždy si so sebou zoberte teplé oblečenie aj v lete, sledujte predpoveď, informujte niekoho o plánovanej trase a nikdy nepodceňujte tatranský terén. Horská záchranná služba (HZS) je dosažiteľná na čísle 18 300.</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--              CHAPTER 3: JAZERÁ                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-blue banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 3</span>
+    <h1 class="chapter-title">🏞️ Jazerá<br>Chaty pri vodách</h1>
+    <p class="chapter-intro">Slovenské horské jazerá sú ako zrkadlá neba — čisté, tiché, fascinujúce. A chaty pri nich sú tým najkrajším miestom, kde môžete ráno otvoriť oči.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="body-text">
+    Slovensko disponuje vyše 200 prirodzenými horskými jazerami, z ktorých mnohé vznikli pôsobením ľadovca. Najznámejšie sú tatranské plesá — Štrbské pleso, Hincovo pleso či Popradské pleso. Pri každom z nich nájdete ubytovanie s neopakovateľnou atmosférou.
+  </p>
+
+  <!-- CHATA pri jazere 1 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌊</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Hotel Patria — Štrbské pleso</div>
+        <div class="chata-location">Štrbské pleso, Vysoké Tatry · nadm. výška 1355 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Štrbské pleso je azda najznámejšou prírodnou scenériou Slovenska. Emeraldovo modré jazero obklopené vzpínajúcimi sa taterskými veľhorami — pohľad, ktorý sa stal symbolom celého Slovenska. Ubytovanie priamo pri jazere ponúka niekoľko zariadení, z ktorých najcharakteristickejší je ikonický Hotel Patria s panoramatickými oknami priamo do srdca Tatier.
+      </p>
+      <p class="chata-desc">
+        Okolo jazera vedie nenáročná náučná cesta vhodná pre celú rodinu. V lete sem prichádzajú peší turisti a cyklisti, v zime Štrbské pleso hostí vrcholové bežkárske preteky a je štartovacím miestom do Tatranského pohárového okruhu.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Jazero</span><span class="stat-value">Štrbské pleso</span></div>
+        <div class="stat-item"><span class="stat-label">Pleso</span><span class="stat-value">20 ha</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto / vlak</span></div>
+        <div class="stat-item"><span class="stat-label">Cena/noc</span><span class="stat-value">od 120 €</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA pri jazere 2 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">💧</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata pri Hincovom plese</div>
+        <div class="chata-location">Mengusovská dolina, Tatry · nadm. výška 1946 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Hincovo pleso je najväčšie prirodné ľadovcové jazero v Tatrách — a jedno z najkrajších. Jeho voda je tak priezračná, že vidíte kamienky na dne aj v hĺbke niekoľkých metrov. Skromná chata pri plese ponúka nocľah a jednoduché teplé jedlá pre turistov, ktorí sem prišli pešky z Popradského plesa.
+      </p>
+      <p class="chata-desc">
+        Cesta z Popradského plesa trvá asi 2 hodiny a vedie cez nádherné alpínske lúky s výhľadom na Kriváň — symbol Slovenska, vrchol, ktorý každý pravý Slovák musí zdolať aspoň raz v živote. Výstup na Kriváň samotný vedie z oblasti Štrbského plesa.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Jazero</span><span class="stat-value">Hincovo pleso</span></div>
+        <div class="stat-item"><span class="stat-label">Plocha</span><span class="stat-value">20,08 ha</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Len pešo</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">30 miest</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA pri jazere 3 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🏡</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chaty pri Liptovskej Mare</div>
+        <div class="chata-location">Liptovská Mara, Liptovský Mikuláš · 563 m n. m.</span></div>
+        <div class="stars">★★★★☆</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Liptovská Mara je najväčšia vodná nádrž na Slovensku a v lete sa premení na vodácky raj. Chalupy a chaty pri jej brehoch ponúkajú ideálne zázemie pre vodné športy — kanoistiku, windsurfing, jachting aj kúpanie. Okolie je ploché a vhodné pre rodinné cyklistické výlety.
+      </p>
+      <p class="chata-desc">
+        Liptovský Mikuláš — centrum regiónu — je len niekoľko kilometrov ďaleko a ponúka bohatú gastronomickú a kultúrnu ponuku. V blízkosti nájdete aj slávne Jaskyňu Demänovská jaskyňa slobody, jednu z najnavštevovanejších jaskýň na Slovensku.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto (hlavná sezóna)</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Typ jazera</span><span class="stat-value">Priehrada</span></div>
+        <div class="stat-item"><span class="stat-label">Plocha</span><span class="stat-value">2 762 ha</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto</span></div>
+        <div class="stat-item"><span class="stat-label">Cena/noc</span><span class="stat-value">od 80 €</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATA pri jazere 4 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌅</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata Popradské pleso</div>
+        <div class="chata-location">Mengusovská dolina · nadm. výška 1494 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Popradské pleso je jedným z najfotografovanejších miest v celom Slovensku. Historická chata postavená v roku 1879 stojí priamo pri brehu jazera a z jej terasy sa otvára pohľad, ktorý si zaslouží každú námahu cesty. Výstup z Popradu trvá zhruba 3 hodiny po turistickom chodníku.
+      </p>
+      <p class="chata-desc">
+        Chata ponúka tradičnú taterskú kuchyňu — guľáš, lokše, bryndzové halušky — a teplý krb pre chladné horské večery. Je to štartovací bod pre výstupy na Rysy, Krivánˊ a ďalšie tatranské vrcholy.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Jazero</span><span class="stat-value">Popradské pl.</span></div>
+        <div class="stat-item"><span class="stat-label">Kapacita</span><span class="stat-value">120 miest</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Len pešo</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Máj–Okt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box info-box-blue">
+    <div class="info-box-icon">💡</div>
+    <div class="info-box-content">
+      <h4>Tip: Zlatá hodina pri plese</h4>
+      <p>Ak chceš zachytiť dokonalý odraz tatranských štítov v jazere, vstaň skoro ráno. Hodinu po úsvite je hladina najkľudnejšia a svetlo najjemnejšie. Stojí to za to vstať o štvrtej ráno!</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--               CHAPTER 4: LESY                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-brown banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 4</span>
+    <h1 class="chapter-title">🌲 Lesy<br>Lesné chaty a chalupy</h1>
+    <p class="chapter-intro">Slovenské lesy sú tajomné, husté a plné života. Kto raz prespí v lesnej chate a ráno ho prebudí spev vtákov a vôňa smreku, ten sa už nikdy nevráti k hluku miest.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="body-text">
+    Viac ako polovica Slovenska je pokrytá lesom. Pralesy, bukové háje, smrekovcové svahy — každý kút krajiny ponúka niečo jedinečné. Lesné chaty sú pre mnohých tou pravou dovolenkou: žiadne hlučné cesty, žiadni susedia, len príroda vo všetkej svojej kráse.
+  </p>
+
+  <!-- Slovenský raj -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌿</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chatky v Slovenskom raji</div>
+        <div class="chata-location">Slovenský raj, Spišská Nová Ves · 400–1200 m n. m.</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Slovenský raj je jedným z najpôsobivejších národných parkov v strednej Európe. Rokliny, vodopády, rebrínkové chodníky priamo nad zurčiacimi potokmi — každý meter tejto krajiny je dobrodružstvo. Chalupy a chatky v obciach ako Čingov, Podlesok a Dedinky ponúkajú skvelé zázemie pre výlety do roklín.
+      </p>
+      <p class="chata-desc">
+        Najobľúbenejšie rokliny — Suchá Belá, Piecky, Kyseľ — majú jednosmerný pohyb a sú vybavené rebríkmi, reťazami a lávkami. Obtiažnosť je stredná až vysoká, ale zážitok je nezabudnuteľný aj pre tých, čo nie sú vycvičenými turistami.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">NP</span><span class="stat-value">Slov. raj</span></div>
+        <div class="stat-item"><span class="stat-label">Rozloha</span><span class="stat-value">19 763 ha</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto</span></div>
+        <div class="stat-item"><span class="stat-label">Cena/noc</span><span class="stat-value">od 60 €</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Muránska planina -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🦌</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chalupa v Muránskej planine</div>
+        <div class="chata-location">Muránska planina, Revúca · 500–1310 m n. m.</div>
+        <div class="stars">★★★★☆</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Muránska planina je jedno z najmenej objavených miest Slovenska — a práve to je jej čaro. Rozľahlý krasový masív pokrytý hustými lesmi, kde sa stretáte s jelení, srnci a vzácnymi motýľmi skôr než s inými turistami. Chalupy v obciach Muráň a Tisovec sú útočiskami pre tých, čo hľadajú skutočný pokoj.
+      </p>
+      <p class="chata-desc">
+        Dominantou je ruina Muránskeho hradu, legendami opradená pevnosť na skale. Výstup na hrad trvá zhruba hodinu a výhľad z vrcholu stojí za každý krok. V okolí nájdete aj jaskyňu Domica, Baradlu a množstvo náučných chodníkov.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">NP</span><span class="stat-value">Muránska pl.</span></div>
+        <div class="stat-item"><span class="stat-label">Rozloha</span><span class="stat-value">20 318 ha</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto</span></div>
+        <div class="stat-item"><span class="stat-label">Spokojnosť</span><span class="stat-value">9.2 / 10</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Poloniny -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🦉</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chalupa v Poloninách</div>
+        <div class="chata-location">NP Poloniny, Snina · 200–1208 m n. m.</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Poloniny sú najvýchodnejším — a azda najenáromantickejším — národným parkom Slovenska. Toto je krajina pôvodných pralesov, kde stromy nikdy nevideli sekeru. UNESCO tu chráni jedny z posledných zachovaných pralesov mierneho pásma v Európe. Obec Nová Sedlica je vstupnou bránou do tejto magickej krajiny.
+      </p>
+      <p class="chata-desc">
+        Poloniny sú rajem pre milovníkov vtákov (bocian čierny, orol skalný, vlk), hvezdárov (minimálne svetelné znečistenie) a tých, čo hľadajú miesto, kde civilizácia ešte nedobehla prírodu. Chalupy v okolí sú skromné, ale autentické — pravá slovenská dedina v najúprimnejšom zmysle slova.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">NP</span><span class="stat-value">Poloniny</span></div>
+        <div class="stat-item"><span class="stat-label">UNESCO</span><span class="stat-value">✅ Chránené</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Ľahká–Stredná</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box info-box-green">
+    <div class="info-box-icon">🐻</div>
+    <div class="info-box-content">
+      <h4>Fauna slovenských lesov</h4>
+      <p>V slovenských lesoch žijú medvede, vlky, rysy a množstvo vzácnych druhov. Stretnutie s medveďom je v niektorých oblastiach reálne. Nikdy ho neprikrmujte, dodržujte bezpečnú vzdialenosť a noste so sebou repelent na zvieratá. Tieto zásady vám zaistia bezpečný a úžasný pobyt v prírode.</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--             CHAPTER 5: VÝHĽADY                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-gold banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 5</span>
+    <h1 class="chapter-title">🌅 Výhľady<br>Panoramatické chaty</h1>
+    <p class="chapter-intro">Sú miesta, kde horizont nemá hraníc. Kde pohľad prekonáva slová. Kde sa cítite malí — a zároveň nekonečne slobodní.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="body-text">
+    Slovensko ponúka niektoré z najkrajších panoramatických výhľadov v Európe. A chaty s výhľadom — či už z horského sedla, skalnatého hrebeňa alebo starodávnej veže — sú zážitkom, ktorý vás primäje zabudnúť na čas.
+  </p>
+
+  <!-- VÝHĽAD 1 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌋</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata na Skalnatom plese</div>
+        <div class="chata-location">Skalnaté pleso, Tatry · nadm. výška 1751 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Skalnaté pleso je dostupné lanovkou z Tatranskej Lomnice a ponúka jeden z najdostupnejších panoramatických výhľadov v celých Tatrách. Chata pri plese je ideálna pre rodiny — nevyžaduje fyzickú zdatnosť a zároveň ponúka výhľad na tatranské vrcholy, ktorý berie dych.
+      </p>
+      <p class="chata-desc">
+        Z plesa môžete pokračovať ďalšou lanovkou priamo na Lomnický štít (2634 m n. m.) — najvyšší dostupný bod tatranskou lanovkou a miesto, odkiaľ vidíte za dobrého počasia až do Poľska, Maďarska a Rakúska.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Lanovka</span></div>
+        <div class="stat-item"><span class="stat-label">Výhľad</span><span class="stat-value">360°</span></div>
+        <div class="stat-item"><span class="stat-label">Vhodné pre</span><span class="stat-value">Rodiny</span></div>
+        <div class="stat-item"><span class="stat-label">Otvorené</span><span class="stat-value">Celoročne</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VÝHĽAD 2 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🌄</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Chata Chleb — Malá Fatra</div>
+        <div class="chata-location">Vrátna, Malá Fatra · nadm. výška 1647 m</div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Vrchol Chleb v Malej Fatre je vyhlasovaný za jeden z najkrajších výhľadových bodov na Slovensku. Za jasného dňa odtiaľto vidíte Tatry, Veľkú Fatru, Nízkych Tatier aj Beskydy — štyri horské masívy naraz. Malá chata pod vrcholom je útočiskom pre turistov, ktorí zdolajú tento výstup.
+      </p>
+      <p class="chata-desc">
+        Výstup z Vrátnej doliny lanovkou na Snilovské sedlo (1524 m) trvá len niekoľko minút, odtiaľ pešo na Chleb zhruba 45 minút. Hrebeňová trasa cez Veľký Kriváň je jednou z najkrajších jednodenných turistík na Slovensku.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima (lyžovanie)</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Výška</span><span class="stat-value">1 647 m</span></div>
+        <div class="stat-item"><span class="stat-label">Výhľad</span><span class="stat-value">4 pohoria</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Lanovka+pešo</span></div>
+        <div class="stat-item"><span class="stat-label">Obtiažnosť</span><span class="stat-value">Stredná</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VÝHĽAD 3 -->
+  <div class="chata-card">
+    <div class="chata-header">
+      <div class="chata-icon">🏯</div>
+      <div class="chata-header-text">
+        <div class="chata-name">Penzión pri Bojnickom zámku</div>
+        <div class="chata-location">Bojnice, Horná Nitra · 310 m n. m.</div>
+        <div class="stars">★★★★☆</div>
+      </div>
+    </div>
+    <div class="chata-body">
+      <p class="chata-desc">
+        Nie každý výhľad musí byť z vrcholu hory. Bojnický zámok — jeden z najromantickejších zámkov v strednej Európe — ponúka pohľad ako z rozprávky. Ubytovanie v priamo v historickom centre Bojníc, s výhľadom na gotické veže zámku odrážajúce sa v rybníku, je zážitok sám osebe.
+      </p>
+      <p class="chata-desc">
+        Neďaleká ZOO Bojnice je najstaršia a najnavštevovanejšia zoologická záhrada na Slovensku. Geotermálny kúpeľný komplex v centre mesta je ideálny pre relax po turistike. V máji sa tu koná slávny Medzinárodný festival duchov a strašidiel, ktorý priťahuje nadšencov stredovekej kultúry z celej Európy.
+      </p>
+      <div class="season-badges">
+        <span class="badge badge-spring">🌱 Jar</span>
+        <span class="badge badge-summer">☀️ Leto</span>
+        <span class="badge badge-autumn">🍂 Jeseň</span>
+        <span class="badge badge-winter">❄️ Zima</span>
+      </div>
+      <div class="chata-stats">
+        <div class="stat-item"><span class="stat-label">Typ</span><span class="stat-value">Historický</span></div>
+        <div class="stat-item"><span class="stat-label">Výhľad</span><span class="stat-value">Zámok</span></div>
+        <div class="stat-item"><span class="stat-label">Prístup</span><span class="stat-value">Auto / vlak</span></div>
+        <div class="stat-item"><span class="stat-label">Cena/noc</span><span class="stat-value">od 70 €</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    Výhľad z vrcholu nie je odmena za námahou — je to dar, ktorý si príroda schováva pre tých, čo sa neboja ísť ďalej.
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--           CHAPTER 6: PRAKTICKÉ INFORMÁCIE           -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="banner-purple banner">
+  <div style="max-width:720px; margin:0 auto;">
+    <span class="chapter-label">Kapitola 6</span>
+    <h1 class="chapter-title">📋 Praktické<br>informácie</h1>
+    <p class="chapter-intro">Dobrá príprava je polovica úspechu. Tu nájdeš všetko, čo potrebuješ vedieť predtým, ako si zarezervuješ svoju prvú (alebo ďalšiu) chatu.</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- REZERVÁCIA -->
+  <div class="practical-section">
+    <h3>🗓️ Ako si rezervovať chatu</h3>
+    <p class="body-text">Rezervácia chaty na Slovensku je dnes oveľa jednoduchšia ako kedysi. Väčšina chalúp a chát je registrovaná na online platformách, niektoré však stále fungujú výhradne na telefón alebo e-mail.</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Platforma</th><th>Typ ubytovanie</th><th>Výhody</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Booking.com</strong></td><td>Hotely, penzióny, chalupy</td><td>Najširší výber, recenzie</td></tr>
+        <tr><td><strong>Airbnb</strong></td><td>Súkromné chalupy, chaty</td><td>Unikátne nehnuteľnosti, lokálni hostitelia</td></tr>
+        <tr><td><strong>Tatry.sk</strong></td><td>Tatranské ubytovanie</td><td>Špecializované na Tatry</td></tr>
+        <tr><td><strong>Chaty.sk</strong></td><td>Chalupy, chaty</td><td>Slovenský portál, nižšie ceny</td></tr>
+        <tr><td><strong>Priamo u majiteľa</strong></td><td>Všetky typy</td><td>Najlepšia cena, flexibilita</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box info-box-gold" style="margin-top:16px;">
+      <div class="info-box-icon">⚡</div>
+      <div class="info-box-content">
+        <h4>Rezervuj vopred!</h4>
+        <p>Populárne chaty a chalupy — najmä v Tatrách a pri Liptovskej Mare — sú v lete (júl–august) obsadené mesiace dopredu. Horské chaty v Tatrách treba rezervovať ideálne 2–3 mesiace vopred.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ČO SI ZBALIŤ -->
+  <div class="practical-section">
+    <h3>🎒 Čo si zbaliť na chatu</h3>
+    <div class="two-col">
+      <div>
+        <p style="font-weight:700; margin-bottom:10px; color:var(--green-dark);">🏔️ Horská turistika:</p>
+        <ul class="checklist">
+          <li>Turistická obuv s tuhou podrážkou</li>
+          <li>Nepremokavá bunda (aj v lete!)</li>
+          <li>Teplý vrstvený odev</li>
+          <li>Mapa / GPS / aplikácia Mapy.cz</li>
+          <li>Lekárnička prvej pomoci</li>
+          <li>Dostatočné zásoby vody (1,5–2 l/osoba)</li>
+          <li>Energetické tyčinky a orechy</li>
+          <li>Čelovka s náhradnými batériami</li>
+          <li>Slnečný krém (SPF 50 vo výške!)</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-weight:700; margin-bottom:10px; color:var(--brown-dark);">🏡 Pobyt na chalupe:</p>
+        <ul class="checklist">
+          <li>Plachty / obliečky (ak nie sú zahrnuté)</li>
+          <li>Moskytiéra a repelent</li>
+          <li>Grilovacie potreby / zapaľovač</li>
+          <li>Spoľahlivá baterka</li>
+          <li>Zásoby potravín na prvý deň</li>
+          <li>Kávovár / kanvica (ak obľubujete kávu)</li>
+          <li>Hry a knihy na večery</li>
+          <li>Stany a karimatky (na táborenie v okolí)</li>
+          <li>Fotoaparát pre nezabudnuteľné zábery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRAVIDLÁ -->
+  <div class="practical-section">
+    <h3>📜 Pravidlá a etiketa v horách a chatách</h3>
+    <p class="body-text">Slovenská horská kultúra má svoje nepísané pravidlá. Ich dodržiavanie zaistí, že si dovolenkový zážitok užijete vy, ale aj tí, čo prídu po vás.</p>
+    <ul class="checklist">
+      <li><strong>Pozdravte každého turistu</strong> — v horách je pozdrav samozrejmosťou a prejavom vzájomnej úcty</li>
+      <li><strong>Nechajte prírodu tak, ako ste ju našli</strong> — zbierajte odpadky aj cudzích, netrháte rastliny, neporušujte prírodné prostredí</li>
+      <li><strong>Dodržiavajte ticho od 22:00 do 7:00</strong> — v chatách aj kempingoch je nočná tichá hodina záväzná</li>
+      <li><strong>Psy na vôdzke</strong> — v národných parkoch je voľné púšťanie psov zakázané</li>
+      <li><strong>Choďte po značených chodníkoch</strong> — skratky ničia vegetáciu a môžu byť nebezpečné</li>
+      <li><strong>Oheň len na určených miestach</strong> — v lese je zakladanie ohňa mimo vyhradených táborísk zakázané</li>
+      <li><strong>Zaplaťte za nocľah vopred</strong> — v horských chatách je zvykom platiť vopred a potvrdiť príchod deň vopred</li>
+    </ul>
+  </div>
+
+  <!-- MAPA REGIÓNOV -->
+  <div class="region-map">
+    <h3>🗺️ Prehľad slovenských turistických regiónov</h3>
+    <div class="regions-grid">
+      <div class="region-item">
+        <span class="ri-icon">🏔️</span>
+        <div class="ri-name">Vysoké Tatry</div>
+        <div class="ri-sub">Slovenský klenotnica</div>
+      </div>
+      <div class="region-item">
+        <span class="ri-icon">⛷️</span>
+        <div class="ri-name">Nízke Tatry</div>
+        <div class="ri-sub">Jasná, Demänovka</div>
+      </div>
+      <div class="region-item">
+        <span class="ri-icon">🌲</span>
+        <div class="ri-name">Malá Fatra</div>
+        <div class="ri-sub">Vrátna, Terchová</div>
+      </div>
+      <div class="region-item">
+        <span class="ri-icon">💧</span>
+        <div class="ri-name">Liptov</div>
+        <div class="ri-sub">Liptovská Mara</div>
+      </div>
+      <div class="region-item">
+        <span class="ri-icon">🌿</span>
+        <div class="ri-name">Slovenský raj</div>
+        <div class="ri-sub">Rokliny, vodopády</div>
+      </div>
+      <div class="region-item">
+        <span class="ri-icon">🦉</span>
+        <div class="ri-name">Poloniny</div>
+        <div class="ri-sub">Pralesy, divočina</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENOVÁ ORIENTÁCIA -->
+  <div class="practical-section">
+    <h3>💰 Orientačné ceny ubytovania (2025)</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Typ ubytovanie</th><th>Sezóna</th><th>Cena/noc (2 osoby)</th><th>Zahrnuje</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Horská chata (turistická)</td><td>Leto</td><td>18–35 € / osoba</td><td>Nocľah, raňajky</td></tr>
+        <tr><td>Súkromná chalupa</td><td>Leto</td><td>80–200 €</td><td>Celá chalupa</td></tr>
+        <tr><td>Horský penzión</td><td>Leto</td><td>60–150 €</td><td>Izba, raňajky</td></tr>
+        <tr><td>Glamping / zrub</td><td>Leto</td><td>100–250 €</td><td>Celý objekt</td></tr>
+        <tr><td>Tatranský hotel ****</td><td>Leto</td><td>120–350 €</td><td>Izba, polpenzia</td></tr>
+        <tr><td>Off-season chalupa</td><td>Jeseň/Jar</td><td>50–130 €</td><td>Celá chalupa</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box info-box-green" style="margin-top:16px;">
+      <div class="info-box-icon">💡</div>
+      <div class="info-box-content">
+        <h4>Tip na úsporu: off-season je kráľ</h4>
+        <p>Máj–jún a september–október sú najkrajšie mesiace v slovenských horách — menej turistov, nižšie ceny, krajšie svetlo. Ceny châp sú v tomto období o 20–40 % nižšie ako v hlavnej letnej sezóne.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÔLEŽITÉ ČÍSLA -->
+  <div class="practical-section">
+    <h3>📞 Dôležité kontakty</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Služba</th><th>Kontakt</th><th>Kedy volať</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>🚑 Záchranná služba</td><td><strong>112</strong></td><td>Akákoľvek núdza</td></tr>
+        <tr><td>⛰️ Horská záchranná služba</td><td><strong>18 300</strong></td><td>Úraz / strata v horách</td></tr>
+        <tr><td>🚒 Hasiči</td><td><strong>150</strong></td><td>Požiar, záplavy</td></tr>
+        <tr><td>🚓 Polícia</td><td><strong>158</strong></td><td>Trestný čin, nehoda</td></tr>
+        <tr><td>🐻 Stredisko ochrany prírody</td><td><strong>+421 48 4701 818</strong></td><td>Kontakt so zvieratami</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                   CLOSING PAGE                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="closing-page">
+  <div class="closing-icon">🏔️</div>
+
+  <h2 class="closing-title">Slovensko čaká<br>na teba</h2>
+
+  <p class="closing-text">
+    Každá chata je príbeh. Každý výstup je cesta do seba samého. Slovensko je krajina, kde príroda ešte nepodľahla urbanizácii, kde vzduch vonia smrekom, kde hory nezmenšili svoju veľkosť a kde dovolenkový čas plynie inak — pomalšie, plnšie, pravdivejšie.
+  </p>
+
+  <p class="closing-text">
+    Nech si vyberieš tatranské pleso, lesné útočisko v Poloninách, alebo romantickú chalupu v Slovenskom raji — každé miesto ti dá niečo iné. Každé ti dá viac, ako čakaš.
+  </p>
+
+  <div class="closing-quote">
+    „Hory nevolajú každého. Ale keď zavolajú — treba ísť."<br>
+    <span style="font-size:11pt; font-style:normal; opacity:0.7; margin-top:10px; display:block;">— Slovenské turistické príslovie</span>
+  </div>
+
+  <div style="margin-top: 50px; color: rgba(255,255,255,0.5); font-size:9pt; letter-spacing:2px; text-transform:uppercase;">
+    Chaty na Slovensku · Sprievodca zdarma · 2025
+  </div>
+</div>
+
+
+<button class="pdf-btn" onclick="window.print()">
+  ⬇ Stiahnuť PDF
+</button>
+
+</body>
+</html>
